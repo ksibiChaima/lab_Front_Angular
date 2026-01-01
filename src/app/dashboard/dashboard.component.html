@@ -1,0 +1,31 @@
+<div style="display:flex; gap:16px; flex-wrap:wrap;">
+	<mat-card style="flex:1 1 200px;">
+		<mat-card-title>Members</mat-card-title>
+		<mat-card-content>
+			<h2>{{membersCount}}</h2>
+		</mat-card-content>
+	</mat-card>
+	<mat-card style="flex:1 1 200px;">
+		<mat-card-title>Events</mat-card-title>
+		<mat-card-content>
+			<h2>{{eventsCount}}</h2>
+		</mat-card-content>
+	</mat-card>
+	<mat-card style="flex:1 1 200px;">
+		<mat-card-title>Publications</mat-card-title>
+		<mat-card-content>
+			<h2>{{publicationsCount}}</h2>
+		</mat-card-content>
+	</mat-card>
+	<mat-card style="flex:1 1 200px;">
+		<mat-card-title>Outils</mat-card-title>
+		<mat-card-content>
+			<h2>{{outilsCount}}</h2>
+		</mat-card-content>
+	</mat-card>
+</div>
+
+<h3 style="margin-top:20px">Recent members</h3>
+<mat-list>
+	<mat-list-item *ngFor="let m of recentMembers">{{m.name || m.email}}</mat-list-item>
+</mat-list>

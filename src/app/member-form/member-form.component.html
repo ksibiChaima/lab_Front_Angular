@@ -1,0 +1,23 @@
+<p>Create New Form</p>
+<form [formGroup]="form" (ngSubmit)="sub()"> <!--ngSubmit eqa action post en php-->
+
+
+<mat-form-field appearance="fill">
+    <input matInput placeholder="cin" formControlName="cin">
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+    <input matInput placeholder="Name" formControlName="name">
+</mat-form-field>
+<br>
+<mat-form-field appearance="fill">
+    <input matInput placeholder="Type" formControlName="type">
+</mat-form-field>
+<br> 
+<!--mat-form-field appearance="fill">
+    <input matInput placeholder="Creation Date" formControlName="createDate">
+</!--mat-form-field--->
+<br>
+<button type="submit">submit</button>
+</form>
+

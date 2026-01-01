@@ -1,0 +1,25 @@
+<div class="outils-root">
+  <h2>Outils</h2>
+  <mat-progress-spinner *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+  <mat-form-field appearance="outline" style="width:360px; margin-bottom:12px;">
+    <mat-label>Search outils</mat-label>
+    <input matInput (input)="applyFilter($event)" placeholder="id or source" />
+  </mat-form-field>
+
+  <div class="outils-grid">
+    <mat-card *ngFor="let o of (filtered.length ? filtered : outils)" class="outil-card">
+      <mat-card-header>
+        <mat-card-title>{{ o.id }}</mat-card-title>
+        <mat-card-subtitle>{{ o.date }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Source: {{ o.source }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" [routerLink]="['/outils', o.id]">View</a>
+        <a mat-button color="accent" *ngIf="o.sourceUrl" [href]="o.sourceUrl" target="_blank">Open</a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

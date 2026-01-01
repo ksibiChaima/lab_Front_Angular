@@ -1,0 +1,109 @@
+{
+  "members": [
+    {
+      "cin": "12345",
+      "name": "Emna",
+      "type": "student",
+      "id": "5678"
+    },
+    {
+      "cin": "55112",
+      "name": "fatma chebil",
+      "type": "student",
+      "id": "589d"
+    },
+    {
+      "id": "d852",
+      "cin": "22221",
+      "name": "Monta",
+      "type": "student",
+      "createDate": "2025-10-09T07:50:27.312Z"
+    },
+    {
+      "id": "1522",
+      "cin": "22221",
+      "name": "Montaha",
+      "type": "student",
+      "createDate": "2025-10-09T08:35:09.810Z"
+    },
+    {
+      "id": "943a",
+      "cin": "22221",
+      "name": "Montahaaaaa",
+      "type": "student",
+      "createDate": "2025-10-09T08:49:12.618Z"
+    },
+    {
+      "id": "7b6c",
+      "cin": "111",
+      "name": "ch",
+      "type": "student",
+      "createDate": "2026-01-01T18:31:37.209Z"
+    }
+  ],
+  "outils": [
+    {
+      "id": "o1",
+      "date": "2024-09-01",
+      "source": "GitHub",
+      "authorIds": [
+        "5678"
+      ],
+      "sourceUrl": "https://github.com/example/tool1"
+    },
+    {
+      "id": "o2",
+      "date": "2025-01-15",
+      "source": "ResearchGate",
+      "authorIds": [
+        "d852"
+      ],
+      "sourceUrl": "https://researchgate.net/example/tool2"
+    }
+  ],
+  "publications": [
+    {
+      "id": "p1",
+      "type": "article",
+      "titre": "Deep Learning for Image Recognition",
+      "lien": "https://example.com/article1",
+      "date": "2024-03-20",
+      "sourcepdf": "https://example.com/pdf1",
+      "authorIds": [
+        "5678"
+      ]
+    },
+    {
+      "id": "p2",
+      "type": "conference",
+      "titre": "AI and Healthcare",
+      "lien": "https://example.com/article2",
+      "date": "2025-05-10",
+      "sourcepdf": "https://example.com/pdf2",
+      "authorIds": [
+        "589d"
+      ]
+    }
+  ],
+  "evenement": [
+    {
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "titre": "event 2",
+      "date": "2025-10-14",
+      "lieu": "sfax"
+    },
+    {
+      "id": "7943"
+    },
+    {
+      "id": "6145",
+      "titre": "AI Conference",
+      "date_deb": "2025-11-11T23:00:00.000Z",
+      "date_fin": "2025-11-14T23:00:00.000Z",
+      "lieu": "Enis"
+    }
+  ]
+}

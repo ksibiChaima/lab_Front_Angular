@@ -1,0 +1,3 @@
+.pubs-root { padding: 16px; }
+.pubs-grid { display:flex; flex-wrap:wrap; gap:12px; }
+.pub-card { width: 320px; }
