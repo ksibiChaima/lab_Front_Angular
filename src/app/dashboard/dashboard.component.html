@@ -1,26 +1,57 @@
-<div style="display:flex; gap:16px; flex-wrap:wrap;">
-	<mat-card style="flex:1 1 200px;">
-		<mat-card-title>Members</mat-card-title>
+<div style="display:flex; gap:16px; flex-wrap:wrap; align-items:stretch;">
+	<mat-card style="flex:1 1 220px;">
+		<mat-card-header>
+			<mat-card-title>Members</mat-card-title>
+			<mat-card-subtitle>{{membersCount}}</mat-card-subtitle>
+		</mat-card-header>
 		<mat-card-content>
-			<h2>{{membersCount}}</h2>
+			<small>Current role: <strong>{{ roleLabel }}</strong></small>
 		</mat-card-content>
 	</mat-card>
-	<mat-card style="flex:1 1 200px;">
-		<mat-card-title>Events</mat-card-title>
+
+	<mat-card style="flex:1 1 220px;">
+		<mat-card-header>
+			<mat-card-title>Publications</mat-card-title>
+			<mat-card-subtitle>{{publicationsCount}}</mat-card-subtitle>
+		</mat-card-header>
+	</mat-card>
+
+	<mat-card style="flex:1 1 220px;">
+		<mat-card-header>
+			<mat-card-title>Events</mat-card-title>
+			<mat-card-subtitle>{{eventsCount}}</mat-card-subtitle>
+		</mat-card-header>
+	</mat-card>
+
+	<mat-card style="flex:1 1 220px;">
+		<mat-card-header>
+			<mat-card-title>Outils</mat-card-title>
+			<mat-card-subtitle>{{outilsCount}}</mat-card-subtitle>
+		</mat-card-header>
+	</mat-card>
+</div>
+
+<div style="display:flex; gap:20px; margin-top:18px; flex-wrap:wrap;">
+	<mat-card style="flex:2 1 480px; padding:12px;">
+		<mat-card-title>Members by type</mat-card-title>
 		<mat-card-content>
-			<h2>{{eventsCount}}</h2>
+			<canvas #memberTypeCanvas></canvas>
 		</mat-card-content>
 	</mat-card>
-	<mat-card style="flex:1 1 200px;">
-		<mat-card-title>Publications</mat-card-title>
+
+	<mat-card style="flex:3 1 400px; padding:12px;">
+		<mat-card-title>Events over time</mat-card-title>
 		<mat-card-content>
-			<h2>{{publicationsCount}}</h2>
-		</mat-card-content>
-	</mat-card>
-	<mat-card style="flex:1 1 200px;">
-		<mat-card-title>Outils</mat-card-title>
-		<mat-card-content>
-			<h2>{{outilsCount}}</h2>
+			<div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+				<mat-form-field appearance="outline" style="width:160px;">
+					<mat-label>Timeframe</mat-label>
+					<mat-select [(value)]="timeframe" (selectionChange)="changeTimeframe($event.value)">
+						<mat-option value="6m">Last 6 months</mat-option>
+						<mat-option value="12m">Last 12 months</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<canvas #eventCanvas></canvas>
 		</mat-card-content>
 	</mat-card>
 </div>
@@ -29,3 +60,4 @@
 <mat-list>
 	<mat-list-item *ngFor="let m of recentMembers">{{m.name || m.email}}</mat-list-item>
 </mat-list>
+

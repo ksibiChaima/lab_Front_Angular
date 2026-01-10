@@ -34,11 +34,22 @@
       "createDate": "2025-10-09T08:49:12.618Z"
     },
     {
-      "id": "7b6c",
-      "cin": "111",
-      "name": "ch",
-      "type": "student",
-      "createDate": "2026-01-01T18:31:37.209Z"
+      "id": "1528",
+      "cin": "11114",
+      "name": "imen",
+      "email": "imen@gmail.com",
+      "type": "enseignant",
+      "niveau": null,
+      "encadreurId": null,
+      "sujetThese": null,
+      "anneeInscription": null,
+      "grade": "maitre assistant",
+      "departement": "dgima",
+      "laboratoire": "lab1",
+      "specialites": [
+        "dev web"
+      ],
+      "createDate": "2026-01-10T20:14:38.742Z"
     }
   ],
   "outils": [

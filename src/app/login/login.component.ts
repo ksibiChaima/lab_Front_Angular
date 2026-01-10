@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit {
     this.form = this.fb.group({
       email: [saved, [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      remember: [!!saved]
+      remember: [!!saved],
+      type: ['visitor']
     });
   }
 
@@ -40,14 +41,16 @@ export class LoginComponent implements OnInit {
 
   register() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    const { email, password } = this.form.value;
+    const { email, password, type } = this.form.value;
     this.loading = true;
     this.error = '';
     this.AS.registerWithEmailAndPassword(email, password)
       .then(() => {
         const name = email.split('@')[0];
-        const member = { name, email, createDate: (new Date()).toISOString(), type: 'student' } as any;
-        this.ms.addMember(member).subscribe(() => {
+        // create a member record only for student or enseignant
+        if (type === 'student' || type === 'enseignant') {
+          const member = { name, email, createDate: (new Date()).toISOString(), type } as any;
+          this.ms.addMember(member).subscribe(() => {
           this.loading = false;
           this.router.navigate(['/member']);
         }, (e) => {
@@ -55,6 +58,10 @@ export class LoginComponent implements OnInit {
           this.error = 'Registered but failed to create profile';
           this.router.navigate(['/member']);
         });
+        } else {
+          this.loading = false;
+          this.router.navigate(['/member']);
+        }
       })
       .catch(err => { this.loading = false; this.error = err?.message || 'Register failed'; });
   }

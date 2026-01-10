@@ -1,0 +1,17 @@
+:host {
+	display: block;
+	padding: 8px;
+}
+
+mat-card {
+	min-height: 80px;
+}
+
+canvas {
+	width: 100% !important;
+	height: 240px !important;
+}
+
+@media (max-width: 800px) {
+	canvas { height: 200px !important; }
+}

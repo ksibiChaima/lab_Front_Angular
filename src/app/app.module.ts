@@ -40,6 +40,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 import { MemberProfileComponent } from './member-profile/member-profile.component';
 import { AdminMembersComponent } from './admin/admin-members.component';
 import { UserContextService } from './user-context.service';
@@ -94,6 +95,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   MatButtonModule,
   MatProgressSpinnerModule,
   MatCheckboxModule,
+  MatSelectModule,
   
  // Firebase modules
   AngularFireModule.initializeApp(firebaseConfig),

@@ -21,6 +21,15 @@
 
     <mat-checkbox formControlName="remember">Remember me</mat-checkbox>
 
+    <mat-form-field appearance="fill" style="width:100%; margin-top:8px">
+      <mat-label>Register as</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="visitor">Visitor</mat-option>
+        <mat-option value="student">Etudiant</mat-option>
+        <mat-option value="enseignant">Enseignant</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <div style="display:flex; gap:8px; margin-top:12px; align-items:center">
       <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
         <mat-progress-spinner *ngIf="loading" diameter="18" mode="indeterminate"></mat-progress-spinner>
