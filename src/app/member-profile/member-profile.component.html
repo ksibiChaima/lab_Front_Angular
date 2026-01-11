@@ -18,22 +18,34 @@
             <p *ngIf="member.grade">Grade: {{ member.grade }}</p>
             <p *ngIf="member.etablissement">Etablissement: {{ member.etablissement }}</p>
             <p *ngIf="member.dateInscription">Inscription: {{ member.dateInscription }}</p>
-            <div *ngIf="member.publications && member.publications.length">
-              <h4>Publications ({{ member.publications.length }})</h4>
+            <div *ngIf="memberPublications && memberPublications.length">
+              <h4>Publications ({{ memberPublications.length }})</h4>
               <mat-list>
-                <mat-list-item *ngFor="let p of member.publications">{{ p.titre || p.title || p.name }}</mat-list-item>
+                <mat-list-item *ngFor="let p of memberPublications">
+                  <a [routerLink]="['/publications', p.id]">{{ p.titre || p.title || p.name }}</a>
+                </mat-list-item>
               </mat-list>
             </div>
-            <div *ngIf="member.outils && member.outils.length">
-              <h4>Outils ({{ member.outils.length }})</h4>
+            <div *ngIf="memberOutils && memberOutils.length">
+              <h4>Outils ({{ memberOutils.length }})</h4>
               <mat-list>
-                <mat-list-item *ngFor="let o of member.outils">{{ o.titre || o.name || o.source }}</mat-list-item>
+                <mat-list-item *ngFor="let o of memberOutils">
+                  <a [routerLink]="['/outils', o.id]">{{ o.titre || o.name || o.source || o.id }}</a>
+                </mat-list-item>
               </mat-list>
             </div>
-            <div *ngIf="member.events && member.events.length">
-              <h4>Events ({{ member.events.length }})</h4>
+            <div *ngIf="memberEvents && memberEvents.length">
+              <h4>Events ({{ memberEvents.length }})</h4>
               <mat-list>
-                <mat-list-item *ngFor="let ev of member.events">{{ ev.titre || ev.title || ev.name }}</mat-list-item>
+                <mat-list-item *ngFor="let ev of memberEvents">{{ ev.titre || ev.title || ev.name }}</mat-list-item>
+              </mat-list>
+            </div>
+            <div *ngIf="supervisedStudents && supervisedStudents.length">
+              <h4>Etudiants encadrés ({{ supervisedStudents.length }})</h4>
+              <mat-list>
+                <mat-list-item *ngFor="let s of supervisedStudents">
+                  <a [routerLink]="['/member', s.id]">{{ s.name || (s.firstName + ' ' + s.lastName) }}</a>
+                </mat-list-item>
               </mat-list>
             </div>
             <div *ngIf="member.encadrant">

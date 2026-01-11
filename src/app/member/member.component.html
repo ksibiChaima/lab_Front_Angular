@@ -24,6 +24,31 @@
   <input matInput (input)="applyFilter($event)" placeholder="Search by name, cin, type" />
 </mat-form-field>
 
+<mat-form-field appearance="outline" style="margin-left:16px; width:220px;">
+  <mat-label>Type</mat-label>
+  <mat-select (selectionChange)="onTypeFilterChange($event.value)">
+    <mat-option value="">All</mat-option>
+    <mat-option value="student">Student</mat-option>
+    <mat-option value="enseignant">Enseignant</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="margin-left:16px; width:260px;" *ngIf="availableGrades.length">
+  <mat-label>Grade</mat-label>
+  <mat-select (selectionChange)="onGradeFilterChange($event.value)">
+    <mat-option value="">All</mat-option>
+    <mat-option *ngFor="let g of availableGrades" [value]="g">{{ g }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="margin-left:16px; width:260px;" *ngIf="availableEtablissements.length">
+  <mat-label>Etablissement</mat-label>
+  <mat-select (selectionChange)="onEtablissementFilterChange($event.value)">
+    <mat-option value="">All</mat-option>
+    <mat-option *ngFor="let e of availableEtablissements" [value]="e">{{ e }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
 <!---table a travers le angular materials (website + installation)--->
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -62,6 +87,7 @@
   <ng-container matColumnDef= "action">
     <th mat-header-cell *matHeaderCellDef>ACTIONS</th>
     <td mat-cell *matCellDef="let element"> 
+    <button [routerLink]="['/member', element.id]"> <mat-icon>visibility</mat-icon></button>
     <button [routerLink]="['/member', element.id, 'edit']"> <mat-icon>edit</mat-icon></button>
       <button (click)="delete(element.id)"><mat-icon>delete</mat-icon></button>
     </td>

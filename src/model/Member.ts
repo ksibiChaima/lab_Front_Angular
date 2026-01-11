@@ -15,6 +15,7 @@ export interface Member {
   etablissement?: string;
   diploma?: string; // for students
   dateInscription?: string;
+  sujet?: string; // thesis subject for students
   supervisedStudents?: string[]; // member ids
   publications?: any[]; // publication beans or ids
   outils?: any[]; // outil objects or ids

@@ -24,12 +24,23 @@ export class MemberComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Member>([]);
 
+  // advanced filters
+  filterText = '';
+  filterType = '';
+  filterGrade = '';
+  filterEtablissement = '';
+  availableGrades: string[] = [];
+  availableEtablissements: string[] = [];
+
   fetch(){ //{action post de recevoir les donnees de x  :lancement du thread }
     this.Ms.GetAllMembers().subscribe({
       next: (x) => {
         this.dataSource.data = x;
         if (this.paginator) this.dataSource.paginator = this.paginator;
         if (this.sort) this.dataSource.sort = this.sort;
+        this.availableGrades = Array.from(new Set((x || []).map(m => (m as any).grade).filter(Boolean))).sort();
+        this.availableEtablissements = Array.from(new Set((x || []).map(m => (m as any).etablissement).filter(Boolean))).sort();
+        this.updateAdvancedFilter();
         console.log('Members loaded:', x);
       },
       error: (err) => {
@@ -40,6 +51,21 @@ export class MemberComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.dataSource.filterPredicate = (data: Member, filter: string) => {
+      let f: any = {};
+      try { f = JSON.parse(filter || '{}'); } catch { f = {}; }
+      const text = (f.text || '').toString().trim().toLowerCase();
+      const type = (f.type || '').toString().trim().toLowerCase();
+      const grade = (f.grade || '').toString().trim().toLowerCase();
+      const etab = (f.etablissement || '').toString().trim().toLowerCase();
+
+      const hay = `${data.id || ''} ${(data.cin || '')} ${(data.name || '')} ${(data.type || '')} ${(data.createDate || '')} ${((data as any).grade || '')} ${((data as any).etablissement || '')}`.toLowerCase();
+      if (text && !hay.includes(text)) return false;
+      if (type && ((data.type || '').toString().toLowerCase() !== type)) return false;
+      if (grade && (((data as any).grade || '').toString().toLowerCase() !== grade)) return false;
+      if (etab && (((data as any).etablissement || '').toString().toLowerCase() !== etab)) return false;
+      return true;
+    };
     this.fetch();
   }
 
@@ -49,11 +75,33 @@ export class MemberComponent implements OnInit {
     { id : '9123', cin : '12345', name: 'Ali', type:'etudiant', createDate:'12/12/2024' }*/
     
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.filterText = (event.target as HTMLInputElement).value || '';
+    this.updateAdvancedFilter();
+  }
+
+  onTypeFilterChange(v: string) {
+    this.filterType = v || '';
+    this.updateAdvancedFilter();
+  }
+
+  onGradeFilterChange(v: string) {
+    this.filterGrade = v || '';
+    this.updateAdvancedFilter();
+  }
+
+  onEtablissementFilterChange(v: string) {
+    this.filterEtablissement = v || '';
+    this.updateAdvancedFilter();
+  }
+
+  private updateAdvancedFilter() {
+    this.dataSource.filter = JSON.stringify({
+      text: this.filterText,
+      type: this.filterType,
+      grade: this.filterGrade,
+      etablissement: this.filterEtablissement
+    });
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
   delete(id:string){

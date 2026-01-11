@@ -28,6 +28,7 @@ export class MemberFormComponent implements OnInit {
       encadreurId: [null],
       sujetThese: [null],
       anneeInscription: [null],
+      diploma: [null],
       // enseignant-specific
       grade: [null],
       departement: [null],
@@ -44,13 +45,14 @@ export class MemberFormComponent implements OnInit {
           email: a.email || null,
           type: a.type || 'student',
           niveau: (a as any).niveau || null,
-          encadreurId: (a as any).encadreurId || null,
-          sujetThese: (a as any).sujetThese || null,
-          anneeInscription: (a as any).anneeInscription || null,
+          encadreurId: a.encadrant?.id || (a as any).encadreurId || null,
+          sujetThese: a.sujet || (a as any).sujetThese || null,
+          anneeInscription: (a as any).anneeInscription || a.dateInscription || null,
           grade: a.grade || null,
           departement: (a as any).departement || null,
           laboratoire: (a as any).laboratoire || null,
-          specialites: (a as any).specialites ? (a as any).specialites.join(', ') : null
+          specialites: (a as any).specialites ? (a as any).specialites.join(', ') : null,
+          diploma: a.diploma || (a as any).diplome || null
         });
       });
     }

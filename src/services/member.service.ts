@@ -45,10 +45,10 @@ getMemberByID(id: string ):Observable<Member>
 
   /**
    * Fetch a full member record (including publications filled by backend via /fullmember/{id})
-   * Uses gateway root because /fullmember is exposed at gateway-level controller.
+   * Uses MEMBER service base URL because /fullmember is at the service root level.
    */
   getFullMember(id: string): Observable<Member> {
-    const url = `${environment.gatewayUrl}/fullmember/${id}`;
+    const url = `/MEMBER/fullmember/${id}`;
     return this.httpClient.get<any>(url).pipe(map(item => {
       const m = this.normalizeMember(item);
       // backend returns 'pubs' as PublicationBean[]
@@ -95,6 +95,62 @@ updateMember(id:string ,f:Member) :Observable<void>
     if (out.diploma && !out.diplome) out.diplome = out.diploma;
     if (out.diplome && !out.diploma) out.diploma = out.diplome;
 
+    // Map form fields to backend fields
+    if (out.sujetThese && !out.sujet) out.sujet = out.sujetThese;
+    if (out.encadreurId && !out.encadrant) {
+      out.encadrant = { id: out.encadreurId };
+    }
+    if (out.anneeInscription && !out.dateInscription) {
+      out.dateInscription = new Date(out.anneeInscription).toISOString().split('T')[0];
+    }
+
+    // Remove form-only fields that backend doesn't understand
+    delete out.sujetThese;
+    delete out.encadreurId;
+    delete out.anneeInscription;
+    delete out.niveau;
+    delete out.departement;
+    delete out.laboratoire;
+    delete out.specialites;
+
+    // Clean up payload for specific backend entity types
+    const kind = this.getBackendKind(out);
+    if (kind === 'etudiant') {
+      // For Etudiant entity, only send fields that exist in Etudiant class
+      const studentPayload: any = {};
+      // Basic Membre fields
+      if (out.cin) studentPayload.cin = out.cin;
+      if (out.prenom) studentPayload.prenom = out.prenom;
+      if (out.nom) studentPayload.nom = out.nom;
+      if (out.email) studentPayload.email = out.email;
+      if (out.password) studentPayload.password = out.password;
+      if (out.dateNaissance) studentPayload.dateNaissance = out.dateNaissance;
+      if (out.photo) studentPayload.photo = out.photo;
+      if (out.cv) studentPayload.cv = out.cv;
+      // Etudiant-specific fields
+      if (out.diplome) studentPayload.diplome = out.diplome;
+      if (out.sujet) studentPayload.sujet = out.sujet;
+      if (out.dateInscription) studentPayload.dateInscription = out.dateInscription;
+      if (out.encadrant) studentPayload.encadrant = out.encadrant;
+      return studentPayload;
+    } else if (kind === 'enseignant') {
+      // For EnseignantChercheur entity, only send fields that exist in EnseignantChercheur class
+      const teacherPayload: any = {};
+      // Basic Membre fields
+      if (out.cin) teacherPayload.cin = out.cin;
+      if (out.prenom) teacherPayload.prenom = out.prenom;
+      if (out.nom) teacherPayload.nom = out.nom;
+      if (out.email) teacherPayload.email = out.email;
+      if (out.password) teacherPayload.password = out.password;
+      if (out.dateNaissance) teacherPayload.dateNaissance = out.dateNaissance;
+      if (out.photo) teacherPayload.photo = out.photo;
+      if (out.cv) teacherPayload.cv = out.cv;
+      // Enseignant-specific fields
+      if (out.grade) teacherPayload.grade = out.grade;
+      if (out.etablissement) teacherPayload.etablissement = out.etablissement;
+      return teacherPayload;
+    }
+
     return out;
   }
 
@@ -117,6 +173,7 @@ updateMember(id:string ,f:Member) :Observable<void>
       etablissement: item.etablissement,
       diploma: item.diplome || item.diploma,
       dateInscription: item.dateInscription,
+      sujet: item.sujet,
       supervisedStudents: item.supervisedStudents || [],
       publications: item.pubs || item.publications || [],
       outils: item.outils || [],

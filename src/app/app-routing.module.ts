@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'member/create', pathMatch: 'full', component: MemberFormComponent },
   // member edit (scoped under member to avoid collisions)
   { path: 'member/:id/edit', pathMatch: 'full', component: MemberFormComponent },
+  { path: 'member/:id', pathMatch: 'full', component: MemberProfileComponent },
 
   // Events
   { path: 'events', pathMatch: 'full', component: EventComponent },

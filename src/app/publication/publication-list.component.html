@@ -7,8 +7,24 @@
     <input matInput (input)="applyFilter($event)" placeholder="title, type, date" />
   </mat-form-field>
 
+  <mat-form-field appearance="outline" style="width:220px; margin-left:16px; margin-bottom:12px;" *ngIf="availableTypes.length">
+    <mat-label>Type</mat-label>
+    <mat-select (selectionChange)="onTypeFilterChange($event.value)">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let t of availableTypes" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width:180px; margin-left:16px; margin-bottom:12px;" *ngIf="availableYears.length">
+    <mat-label>Year</mat-label>
+    <mat-select (selectionChange)="onYearFilterChange($event.value)">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let y of availableYears" [value]="y">{{ y }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <div class="pubs-grid">
-    <mat-card *ngFor="let p of (filtered.length ? filtered : publications)" class="pub-card">
+    <mat-card *ngFor="let p of filtered" class="pub-card">
       <mat-card-header>
         <mat-card-title>{{ p.titre }}</mat-card-title>
         <mat-card-subtitle>{{ p.type }} — {{ p.date | date }}</mat-card-subtitle>
