@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Publication } from 'src/model/Publication';
 import { PublicationService } from 'src/services/publication.service';
+import { UserContextService } from 'src/app/user-context.service';
 
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -15,12 +16,18 @@ export class PublicationListComponent implements OnInit {
   loading = false;
   dataSource = new MatTableDataSource<Publication>([]);
 
-  constructor(private pubService: PublicationService) {}
+  constructor(private pubService: PublicationService, public uc: UserContextService) {}
 
   ngOnInit(): void {
     this.loading = true;
     this.pubService.getAll().subscribe((res) => {
       this.publications = res || [];
+      // if user is not admin and we have a mapped member id, show only their publications
+      const cur = this.uc.getCurrent();
+      if (cur && !this.uc.isAdmin() && cur.id) {
+        const uid = cur.id.toString();
+        this.publications = this.publications.filter(p => (p.authorIds || []).map(String).includes(uid));
+      }
       this.dataSource.data = this.publications;
       this.loading = false;
     }, () => (this.loading = false));

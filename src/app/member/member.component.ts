@@ -25,7 +25,18 @@ export class MemberComponent implements OnInit {
   dataSource = new MatTableDataSource<Member>([]);
 
   fetch(){ //{action post de recevoir les donnees de x  :lancement du thread }
-    this.Ms.GetAllMembers().subscribe((x)=>{this.dataSource.data=x})
+    this.Ms.GetAllMembers().subscribe({
+      next: (x) => {
+        this.dataSource.data = x;
+        if (this.paginator) this.dataSource.paginator = this.paginator;
+        if (this.sort) this.dataSource.sort = this.sort;
+        console.log('Members loaded:', x);
+      },
+      error: (err) => {
+        console.error('GetAllMembers failed:', err);
+        this.dataSource.data = [];
+      }
+    })
   }
 
   ngOnInit(){

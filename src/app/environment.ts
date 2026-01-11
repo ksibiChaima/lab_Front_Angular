@@ -3,12 +3,12 @@
 export const environment = {
   production: false,
   // Point to Gateway, NOT directly to microservices
-  gatewayUrl: 'http://localhost:9000',
+  gatewayUrl: '',
 
-  memberServiceUrl: 'http://localhost:9000/MEMBER/membres',
-  eventServiceUrl: 'http://localhost:9000/EVENEMENT/evenements',
-  outilServiceUrl: 'http://localhost:9000/OUTIL/outils',
-  publicationServiceUrl: 'http://localhost:9000/PUBLICATION/publications'
+  memberServiceUrl: '/MEMBER/membres',
+  eventServiceUrl: '/EVENEMENT/evenements',
+  outilServiceUrl: '/OUTIL/outils',
+  publicationServiceUrl: '/PUBLICATION/publications'
 };
 
 export const firebaseConfig = {
@@ -20,3 +20,4 @@ export const firebaseConfig = {
   appId: "1:959068212449:web:9b6d18665591af58bdfba0",
   measurementId: "G-EYH9G2S373"
 };
+

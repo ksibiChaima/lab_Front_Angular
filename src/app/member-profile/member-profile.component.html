@@ -4,13 +4,48 @@
       <mat-card-title>{{ member.name || (member.firstName + ' ' + member.lastName) }}</mat-card-title>
       <mat-card-subtitle>{{ member.type }}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-      <p *ngIf="member.email">Email: {{ member.email }}</p>
-      <p *ngIf="member.cvUrl">CV: <a [href]="member.cvUrl" target="_blank">Download</a></p>
-      <p *ngIf="member.publications && member.publications.length">Publications: {{ member.publications.length }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="primary" [routerLink]="['/', member.id, 'edit']">Edit</button>
-    </mat-card-actions>
+      <mat-card-content>
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div style="flex:0 0 120px;">
+            <img *ngIf="member.photoUrl" [src]="member.photoUrl" alt="photo" style="width:120px; height:120px; object-fit:cover;" />
+            <div *ngIf="!member.photoUrl" style="width:120px; height:120px; background:#eee; display:flex;align-items:center;justify-content:center">No photo</div>
+          </div>
+          <div style="flex:1 1 auto">
+            <p *ngIf="member.email">Email: {{ member.email }}</p>
+            <p *ngIf="member.cvUrl">CV: <a [href]="member.cvUrl" target="_blank">Download</a></p>
+            <p *ngIf="member.diploma || member.diploma">Diploma: {{ member.diploma || member.diplome }}</p>
+            <p *ngIf="member.sujet">Sujet: {{ member.sujet }}</p>
+            <p *ngIf="member.grade">Grade: {{ member.grade }}</p>
+            <p *ngIf="member.etablissement">Etablissement: {{ member.etablissement }}</p>
+            <p *ngIf="member.dateInscription">Inscription: {{ member.dateInscription }}</p>
+            <div *ngIf="member.publications && member.publications.length">
+              <h4>Publications ({{ member.publications.length }})</h4>
+              <mat-list>
+                <mat-list-item *ngFor="let p of member.publications">{{ p.titre || p.title || p.name }}</mat-list-item>
+              </mat-list>
+            </div>
+            <div *ngIf="member.outils && member.outils.length">
+              <h4>Outils ({{ member.outils.length }})</h4>
+              <mat-list>
+                <mat-list-item *ngFor="let o of member.outils">{{ o.titre || o.name || o.source }}</mat-list-item>
+              </mat-list>
+            </div>
+            <div *ngIf="member.events && member.events.length">
+              <h4>Events ({{ member.events.length }})</h4>
+              <mat-list>
+                <mat-list-item *ngFor="let ev of member.events">{{ ev.titre || ev.title || ev.name }}</mat-list-item>
+              </mat-list>
+            </div>
+            <div *ngIf="member.encadrant">
+              <h4>Encadrant</h4>
+              <p>{{ member.encadrant.firstName || member.encadrant.prenom }} {{ member.encadrant.lastName || member.encadrant.nom }}</p>
+              <p *ngIf="member.encadrant.email">{{ member.encadrant.email }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button *ngIf="(uc.getCurrent()?.id?.toString() === member.id?.toString()) || uc.isAdmin()" mat-button color="primary" [routerLink]="['/member', member.id, 'edit']">Edit</button>
+      </mat-card-actions>
   </mat-card>
 </div>

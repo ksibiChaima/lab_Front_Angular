@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Outil } from 'src/model/Outil';
 import { OutilService } from 'src/services/outil.service';
+import { UserContextService } from 'src/app/user-context.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -14,11 +15,19 @@ export class OutilListComponent implements OnInit {
   loading = false;
   dataSource = new MatTableDataSource<Outil>([]);
 
-  constructor(private outilService: OutilService) {}
+  constructor(private outilService: OutilService, public uc: UserContextService) {}
 
   ngOnInit(): void {
     this.loading = true;
-    this.outilService.getAll().subscribe((res) => { this.outils = res || []; this.dataSource.data = this.outils; this.loading = false; }, () => (this.loading = false));
+    this.outilService.getAll().subscribe((res) => {
+      this.outils = res || [];
+      const cur = this.uc.getCurrent();
+      if (cur && !this.uc.isAdmin() && cur.id) {
+        const uid = cur.id.toString();
+        this.outils = this.outils.filter(o => (o.authorIds || []).map(String).includes(uid));
+      }
+      this.dataSource.data = this.outils; this.loading = false;
+    }, () => (this.loading = false));
   }
 
   applyFilter(event: Event) {

@@ -18,6 +18,13 @@ export class MemberProfileComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id') || this.uc.getCurrent().id;
     if (!id) { this.router.navigate(['/member']); return; }
     this.loading = true;
-    this.ms.getMemberByID(id).subscribe(m => { this.member = m; this.loading = false; }, () => (this.loading = false));
+    // request the full member (with publications populated)
+    this.ms.getFullMember(id).subscribe(
+      m => { this.member = m; this.loading = false; },
+      () => {
+        // fallback to basic member fetch
+        this.ms.getMemberByID(id).subscribe(b => { this.member = b; this.loading = false; }, () => (this.loading = false));
+      }
+    );
   }
 }
