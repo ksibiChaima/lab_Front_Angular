@@ -1,15 +1,32 @@
 
-<mat-card style="max-width:420px; margin:24px auto; padding:16px;">
-  <form [formGroup]="form" (ngSubmit)="sub()">
-    <h2>Sign in</h2>
-    <mat-form-field appearance="outline" style="width:100%">
+<div class="auth-container">
+  <div class="auth-header">
+    <h2>{{ isLogin ? 'Sign In' : 'Register' }}</h2>
+    <p>{{ isLogin ? 'Welcome back! Please sign in to continue.' : 'Create your account to get started.' }}</p>
+  </div>
+
+  <div class="auth-toggle">
+    <div class="toggle-option" 
+         [class.active]="isLogin" 
+         (click)="isLogin = true">
+      Sign In
+    </div>
+    <div class="toggle-option" 
+         [class.active]="!isLogin" 
+         (click)="isLogin = false">
+      Register
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="sub()" class="auth-form">
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>Email</mat-label>
       <input matInput type="email" formControlName="email" autocomplete="email" />
       <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
       <mat-error *ngIf="form.get('email')?.hasError('email')">Enter a valid email</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" style="width:100%">
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>Password</mat-label>
       <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password" />
       <button mat-icon-button matSuffix type="button" (click)="togglePassword()">
@@ -19,25 +36,45 @@
       <mat-error *ngIf="form.get('password')?.hasError('minlength')">Minimum 6 characters</mat-error>
     </mat-form-field>
 
-    <mat-checkbox formControlName="remember">Remember me</mat-checkbox>
+    <mat-form-field appearance="outline" class="form-field" *ngIf="!isLogin">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" />
+      <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Please confirm your password</mat-error>
+      <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">Passwords do not match</mat-error>
+    </mat-form-field>
 
-    <mat-form-field appearance="fill" style="width:100%; margin-top:8px">
-      <mat-label>Register as</mat-label>
+    <mat-form-field appearance="outline" class="form-field" *ngIf="!isLogin">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="fullName" autocomplete="name" />
+      <mat-error *ngIf="form.get('fullName')?.hasError('required')">Full name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Account Type</mat-label>
       <mat-select formControlName="type">
         <mat-option value="visitor">Visitor</mat-option>
-        <mat-option value="student">Etudiant</mat-option>
-        <mat-option value="enseignant">Enseignant</mat-option>
+        <mat-option value="student">Student</mat-option>
+        <mat-option value="teacher">Teacher</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <div style="display:flex; gap:8px; margin-top:12px; align-items:center">
-      <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
-        <mat-progress-spinner *ngIf="loading" diameter="18" mode="indeterminate"></mat-progress-spinner>
-        <span *ngIf="!loading">Sign in</span>
+    <mat-checkbox formControlName="remember" *ngIf="isLogin">Remember me</mat-checkbox>
+
+    <div class="form-actions">
+      <button mat-raised-button 
+              color="primary" 
+              type="submit" 
+              class="primary-button"
+              [disabled]="loading || form.invalid">
+        <div class="loading-overlay" *ngIf="loading">
+          <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+          <span>{{ isLogin ? 'Signing in...' : 'Creating account...' }}</span>
+        </div>
+        <span *ngIf="!loading">{{ isLogin ? 'Sign In' : 'Register' }}</span>
       </button>
-      <button mat-stroked-button color="accent" type="button" (click)="register()" [disabled]="loading">Register</button>
     </div>
 
-    <div *ngIf="error" style="color:crimson; margin-top:8px">{{error}}</div>
+    <div *ngIf="error" class="error-message">{{error}}</div>
+    <div *ngIf="success" class="success-message">{{success}}</div>
   </form>
-</mat-card>
+</div>

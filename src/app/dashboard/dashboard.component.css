@@ -1,17 +1,157 @@
 :host {
-	display: block;
-	padding: 8px;
+  display: block;
+  padding: 16px;
+  background: #fafafa;
 }
 
-mat-card {
-	min-height: 80px;
+/* Minimalist Dashboard Design */
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+/* Stats Cards - Minimalist */
+.stat-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.stat-card:hover {
+  border-color: #1976d2;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin: 8px 0;
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Chart Cards - Minimalist */
+.chart-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-title::before {
+  content: '📊';
+  font-size: 1.1rem;
+}
+
+/* Charts - Proper sizing */
 canvas {
-	width: 100% !important;
-	height: 240px !important;
+  max-width: 100%;
+  height: auto !important;
 }
 
-@media (max-width: 800px) {
-	canvas { height: 200px !important; }
+.member-chart {
+  max-height: 300px;
+}
+
+.event-chart {
+  max-height: 250px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :host {
+    padding: 8px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .chart-card {
+    padding: 16px;
+  }
+  
+  .member-chart {
+    max-height: 250px;
+  }
+  
+  .event-chart {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-number {
+    font-size: 1.25rem;
+  }
+}
+
+/* Material Design Overrides */
+.mat-card {
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+.mat-card-header {
+  padding: 16px 20px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.mat-card-title {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+}
+
+.mat-card-subtitle {
+  font-size: 1.75rem !important;
+  font-weight: 600 !important;
+  color: #1976d2 !important;
+}
+
+.mat-card-content {
+  padding: 16px 20px !important;
+}
+
+/* Form Controls */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-color: #e0e0e0 !important;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #1976d2 !important;
+}
+
+/* Select Dropdown */
+.mat-select-value {
+  color: #333 !important;
+}
+
+.mat-option {
+  font-size: 0.875rem !important;
 }

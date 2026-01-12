@@ -1,25 +1,88 @@
-<div class="outils-root">
-  <h2>Outils</h2>
-  <mat-progress-spinner *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+<div class="outil-container">
+  <div class="outil-header">
+    <h1 class="outil-title">Tools</h1>
+    <div class="outil-actions">
+      <button mat-raised-button color="primary">
+        <mat-icon>add</mat-icon>
+        Create Tool
+      </button>
+    </div>
+  </div>
 
-  <mat-form-field appearance="outline" style="width:360px; margin-bottom:12px;">
-    <mat-label>Search outils</mat-label>
-    <input matInput (input)="applyFilter($event)" placeholder="id or source" />
-  </mat-form-field>
+  <div class="outil-table">
+    <mat-form-field appearance="outline" style="width:360px; margin: 16px;">
+      <mat-label>Search tools</mat-label>
+      <input matInput (input)="applyFilter($event)" placeholder="ID or source" />
+    </mat-form-field>
 
-  <div class="outils-grid">
-    <mat-card *ngFor="let o of (filtered.length ? filtered : outils)" class="outil-card">
-      <mat-card-header>
-        <mat-card-title>{{ o.id }}</mat-card-title>
-        <mat-card-subtitle>{{ o.date }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Source: {{ o.source }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <a mat-button color="primary" [routerLink]="['/outils', o.id]">View</a>
-        <a mat-button color="accent" *ngIf="o.sourceUrl" [href]="o.sourceUrl" target="_blank">Open</a>
-      </mat-card-actions>
-    </mat-card>
+    <table mat-table [dataSource]="filtered.length ? filtered : outils">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let o"> {{o.id}} </td>
+      </ng-container>
+
+      <!-- Source Column -->
+      <ng-container matColumnDef="source">
+        <th mat-header-cell *matHeaderCellDef> Source </th>
+        <td mat-cell *matCellDef="let o"> 
+          <strong>{{o.source}}</strong>
+          <div *ngIf="o.titre" class="outil-description">{{o.titre}}</div>
+        </td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let o"> {{o.date | date:'short'}} </td>
+      </ng-container>
+
+      <!-- Technologies Column -->
+      <ng-container matColumnDef="technologies">
+        <th mat-header-cell *matHeaderCellDef> Technologies </th>
+        <td mat-cell *matCellDef="let o"> 
+          <div class="tech-tags">
+            <span *ngFor="let tech of (o.technologies || [])" class="tech-tag">{{tech}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Owners Column -->
+      <ng-container matColumnDef="owners">
+        <th mat-header-cell *matHeaderCellDef> Owners </th>
+        <td mat-cell *matCellDef="let o"> 
+          <div *ngIf="o.ownerNames && o.ownerNames.length">
+            <span *ngFor="let ownerName of o.ownerNames; let last = last">
+              <span class="owner-name">{{ownerName}}</span>
+              <span *ngIf="!last">, </span>
+            </span>
+          </div>
+          <span *ngIf="!o.ownerNames || !o.ownerNames.length" class="no-owners">No owners listed</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let o">
+          <div class="action-buttons">
+            <button mat-icon-button class="action-button view-button" [routerLink]="['/outils', o.id]">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button edit-button">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button delete-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['id', 'source', 'date', 'technologies', 'owners', 'actions']"></tr>
+      <tr mat-row *matRowDef="let o; columns: ['id', 'source', 'date', 'technologies', 'owners', 'actions'];"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of tools"></mat-paginator>
   </div>
 </div>

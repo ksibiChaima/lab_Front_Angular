@@ -19,35 +19,35 @@ export class EvtCreateComponent {
     private Es: EvtService
   ) {
     this.data = data;
+    
+    // Initialiser le formulaire immédiatement
+    this.form = new FormGroup({
+      titre: new FormControl(''),
+      date_deb: new FormControl(''),
+      date_fin: new FormControl(''),
+      lieu: new FormControl(''),
+      description: new FormControl(''),
+      registrationUrl: new FormControl(''),
+      meetingUrl: new FormControl(''),
+      capacite: new FormControl(0),
+      statut: new FormControl('Prévu')
+    });
+
+    // Si on est en mode édition, charger les données
     if (data) {
       console.log("Mode édition - ID:", data);
       this.Es.getEventById(data).subscribe((res) => {
-        this.form = new FormGroup({
-          titre: new FormControl(res.titre || ''),
-          date_deb: new FormControl(res.date || ''),
-          date_fin: new FormControl(res.dateFin || ''),
-          lieu: new FormControl(res.lieu || ''),
-          description: new FormControl(res.description || ''),
-          type: new FormControl(res.type || 'Conference'),
-          registrationUrl: new FormControl(res.registrationUrl || ''),
-          meetingUrl: new FormControl(res.meetingUrl || ''),
-          capacite: new FormControl(res.capacite || 0),
-          statut: new FormControl(res.statut || 'Prévu')
+        this.form.patchValue({
+          titre: res.titre || '',
+          date_deb: res.date || '',
+          date_fin: res.dateFin || '',
+          lieu: res.lieu || '',
+          description: res.description || '',
+          registrationUrl: res.registrationUrl || '',
+          meetingUrl: res.meetingUrl || '',
+          capacite: res.capacite || 0,
+          statut: res.statut || 'Prévu'
         });
-      });
-    } else {
-      console.log("Mode création");
-      this.form = new FormGroup({
-        titre: new FormControl(''),
-        date_deb: new FormControl(''),
-        date_fin: new FormControl(''),
-        lieu: new FormControl(''),
-        description: new FormControl(''),
-        type: new FormControl('Conference'),
-        registrationUrl: new FormControl(''),
-        meetingUrl: new FormControl(''),
-        capacite: new FormControl(0),
-        statut: new FormControl('Prévu')
       });
     }
   }

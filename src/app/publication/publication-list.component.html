@@ -1,41 +1,100 @@
-<div class="pubs-root">
-  <h2>Publications</h2>
-  <mat-progress-spinner *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+<div class="publication-container">
+  <div class="publication-header">
+    <h1 class="publication-title">Publications</h1>
+    <div class="publication-actions">
+      <button mat-raised-button color="primary">
+        <mat-icon>add</mat-icon>
+        Create Publication
+      </button>
+    </div>
+  </div>
 
-  <mat-form-field appearance="outline" style="width:360px; margin-bottom:12px;">
-    <mat-label>Search publications</mat-label>
-    <input matInput (input)="applyFilter($event)" placeholder="title, type, date" />
-  </mat-form-field>
+  <div class="publication-table">
+    <div style="display: flex; gap: 12px; margin: 16px; flex-wrap: wrap;">
+      <mat-form-field appearance="outline" style="width:360px;">
+        <mat-label>Search publications</mat-label>
+        <input matInput (input)="applyFilter($event)" placeholder="title, type, date" />
+      </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width:220px; margin-left:16px; margin-bottom:12px;" *ngIf="availableTypes.length">
-    <mat-label>Type</mat-label>
-    <mat-select (selectionChange)="onTypeFilterChange($event.value)">
-      <mat-option value="">All</mat-option>
-      <mat-option *ngFor="let t of availableTypes" [value]="t">{{ t }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline" style="width:220px;" *ngIf="availableTypes.length">
+        <mat-label>Type</mat-label>
+        <mat-select (selectionChange)="onTypeFilterChange($event.value)">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let t of availableTypes" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline" style="width:180px; margin-left:16px; margin-bottom:12px;" *ngIf="availableYears.length">
-    <mat-label>Year</mat-label>
-    <mat-select (selectionChange)="onYearFilterChange($event.value)">
-      <mat-option value="">All</mat-option>
-      <mat-option *ngFor="let y of availableYears" [value]="y">{{ y }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline" style="width:180px;" *ngIf="availableYears.length">
+        <mat-label>Year</mat-label>
+        <mat-select (selectionChange)="onYearFilterChange($event.value)">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let y of availableYears" [value]="y">{{ y }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-  <div class="pubs-grid">
-    <mat-card *ngFor="let p of filtered" class="pub-card">
-      <mat-card-header>
-        <mat-card-title>{{ p.titre }}</mat-card-title>
-        <mat-card-subtitle>{{ p.type }} — {{ p.date | date }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p *ngIf="p.lien">Lien: <a href="{{p.lien}}" target="_blank">ouvrir</a></p>
-      </mat-card-content>
-      <mat-card-actions>
-        <a mat-button color="primary" [routerLink]="['/publications', p.id]">View</a>
-        <a mat-button color="accent" *ngIf="p.sourcepdf" [href]="p.sourcepdf" target="_blank">Download PDF</a>
-      </mat-card-actions>
-    </mat-card>
+    <table mat-table [dataSource]="filtered">
+      <!-- Title Column -->
+      <ng-container matColumnDef="titre">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let p"> 
+          <strong>{{p.titre}}</strong>
+          <div *ngIf="p.description" class="publication-description">{{p.description}}</div>
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let p"> 
+          <span class="badge" [ngClass]="'type-' + (p.type || 'article')">{{p.type || 'Article'}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let p"> 
+          <span class="year-badge">{{extractYear(p.date)}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Authors Column -->
+      <ng-container matColumnDef="authors">
+        <th mat-header-cell *matHeaderCellDef> Authors </th>
+        <td mat-cell *matCellDef="let p"> 
+          <div *ngIf="p.authorNames && p.authorNames.length">
+            <span *ngFor="let authorName of p.authorNames; let last = last">
+              <span class="author-name">{{authorName}}</span>
+              <span *ngIf="!last">, </span>
+            </span>
+          </div>
+          <span *ngIf="!p.authorNames || !p.authorNames.length" class="no-authors">No authors listed</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let p">
+          <div class="action-buttons">
+            <button mat-icon-button class="action-button view-button" [routerLink]="['/publications', p.id]">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button edit-button">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button delete-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['titre', 'type', 'date', 'authors', 'actions']"></tr>
+      <tr mat-row *matRowDef="let p; columns: ['titre', 'type', 'date', 'authors', 'actions'];"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of publications"></mat-paginator>
   </div>
 </div>

@@ -1,12 +1,83 @@
-<div class="admin-members-root">
-  <h2>Admin — Members</h2>
-  <mat-list *ngIf="!loading">
-    <mat-list-item *ngFor="let m of members">
-      <div mat-line>{{ m.name }} ({{ m.type }})</div>
-      <div mat-line>{{ m.email || m.cin }}</div>
-      <button mat-icon-button color="primary" [routerLink]="['/', m.id, 'edit']"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button color="warn" (click)="delete(m.id)"><mat-icon>delete</mat-icon></button>
-    </mat-list-item>
-  </mat-list>
-  <mat-progress-spinner *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+<div class="member-container">
+  <div class="member-header">
+    <h1 class="member-title">Members</h1>
+    <div class="member-actions">
+      <button mat-raised-button color="primary">
+        <mat-icon>add</mat-icon>
+        Add Member
+      </button>
+    </div>
+  </div>
+
+  <div class="member-table">
+    <mat-form-field appearance="outline" style="width:360px; margin: 16px;">
+      <mat-label>Search members</mat-label>
+      <input matInput placeholder="name, email, type" />
+    </mat-form-field>
+
+    <table mat-table [dataSource]="members">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let m"> 
+          <strong>{{m.name || 'N/A'}}</strong>
+          <div *ngIf="m.email" class="member-email">{{m.email}}</div>
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let m"> 
+          <span class="badge" [ngClass]="'type-' + (m.type || 'visitor')">{{m.type || 'Visitor'}}</span>
+        </td>
+      </ng-container>
+
+      <!-- Grade Column -->
+      <ng-container matColumnDef="grade">
+        <th mat-header-cell *matHeaderCellDef> Grade </th>
+        <td mat-cell *matCellDef="let m"> 
+          <span *ngIf="m.grade" class="badge">{{m.grade}}</span>
+          <span *ngIf="!m.grade" class="no-grade">-</span>
+        </td>
+      </ng-container>
+
+      <!-- CIN Column -->
+      <ng-container matColumnDef="cin">
+        <th mat-header-cell *matHeaderCellDef> CIN </th>
+        <td mat-cell *matCellDef="let m"> {{m.cin || '-'}} </td>
+      </ng-container>
+
+      <!-- Registration Date Column -->
+      <ng-container matColumnDef="dateInscription">
+        <th mat-header-cell *matHeaderCellDef> Registration Date </th>
+        <td mat-cell *matCellDef="let m"> 
+          {{m.dateInscription ? (m.dateInscription | date:'short') : '-'}}
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let m">
+          <div class="action-buttons">
+            <button mat-icon-button class="action-button view-button" [routerLink]="['/member', m.id]">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button edit-button" [routerLink]="['/', m.id, 'edit']">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="action-button delete-button" (click)="delete(m.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['name', 'type', 'grade', 'cin', 'dateInscription', 'actions']"></tr>
+      <tr mat-row *matRowDef="let m; columns: ['name', 'type', 'grade', 'cin', 'dateInscription', 'actions'];"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of members"></mat-paginator>
+  </div>
 </div>

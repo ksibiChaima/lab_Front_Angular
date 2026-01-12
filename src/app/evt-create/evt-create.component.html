@@ -1,57 +1,12 @@
-<mat-dialog-content [formGroup]="form">
-  
-  <mat-form-field>
-    <input matInput placeholder="titre" formControlName="titre">
-     </mat-form-field>
-<br>
-<mat-form-field>
-    <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate formControlName="date_deb" placeholder="Start date">
-      <input matEndDate formControlName="date_fin" placeholder="End date">
-    </mat-date-range-input>
-    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-
-    <mat-error *ngIf="form.get('date_deb')?.hasError('matStartDateInvalid')">
-      Invalid start date
-    </mat-error>
-    <mat-error *ngIf="form.get('date_fin')?.hasError('matEndDateInvalid')">
-      Invalid end date
-    </mat-error>
-  </mat-form-field>
-
-  <p>Selected range: {{ form.value | json }}</p>
-
-  <mat-form-field>
-    <input matInput placeholder="lieu" formControlName="lieu">
-  </mat-form-field>
-
-  <div class="event-form-container">
+<mat-dialog-content>
+  <div class="form-container">
     <form [formGroup]="form" (ngSubmit)="save()">
-      <mat-form-field appearance="outline">
-        <mat-label>Type d'événement</mat-label>
-        <mat-select formControlName="type">
-          <mat-option value="Conference">Conférence</mat-option>
-          <mat-option value="Workshop">Workshop</mat-option>
-          <mat-option value="Séminaire">Séminaire</mat-option>
-          <mat-option value="Formation">Formation</mat-option>
-          <mat-option value="Réunion">Réunion</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Titre *</mat-label>
-        <input matInput formControlName="titre" placeholder="Titre de l'événement">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" 
-                  placeholder="Description détaillée de l'événement" 
-                  rows="3">
-        </textarea>
-      </mat-form-field>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Titre *</mat-label>
+          <input matInput formControlName="titre" placeholder="Titre de l'événement">
+        </mat-form-field>
+      </div>
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-half">
@@ -71,44 +26,47 @@
         </mat-form-field>
       </div>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="form-field-full">
         <mat-label>Lieu *</mat-label>
         <input matInput formControlName="lieu" placeholder="Lieu de l'événement">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field-full">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" 
+                  placeholder="Description détaillée de l'événement" 
+                  rows="3">
+        </textarea>
       </mat-form-field>
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>URL d'inscription</mat-label>
-          <input matInput 
-                 formControlName="registrationUrl" 
-                 placeholder="Lien vers le formulaire d'inscription">
+          <input matInput formControlName="registrationUrl" placeholder="Lien d'inscription (optionnel)">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>URL de réunion</mat-label>
-          <input matInput 
-                 formControlName="meetingUrl" 
-                 placeholder="Lien Zoom/Teams (optionnel)">
+          <input matInput formControlName="meetingUrl" placeholder="Lien de réunion (optionnel)">
         </mat-form-field>
       </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Capacité</mat-label>
-        <input matInput 
-               type="number" 
-               formControlName="capacite" 
-               placeholder="Nombre de participants maximum">
-      </mat-form-field>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Capacité</mat-label>
+          <input matInput formControlName="capacite" type="number" placeholder="Nombre de participants">
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Statut</mat-label>
-        <mat-select formControlName="statut">
-          <mat-option value="Prévu">Prévu</mat-option>
-          <mat-option value="En cours">En cours</mat-option>
-          <mat-option value="Terminé">Terminé</mat-option>
-          <mat-option value="Annulé">Annulé</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Statut</mat-label>
+          <mat-select formControlName="statut">
+            <mat-option value="Prévu">Prévu</mat-option>
+            <mat-option value="En cours">En cours</mat-option>
+            <mat-option value="Terminé">Terminé</mat-option>
+            <mat-option value="Annulé">Annulé</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
       <div class="form-actions">
         <button mat-button 
@@ -129,8 +87,3 @@
     </form>
   </div>
 </mat-dialog-content>
-
-<mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Close</button>
-  <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
-</mat-dialog-actions>
