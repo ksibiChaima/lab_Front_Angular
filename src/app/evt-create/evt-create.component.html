@@ -1,13 +1,18 @@
 <mat-dialog-content>
   <div class="form-container">
     <form [formGroup]="form" (ngSubmit)="save()">
+      <!-- Titre -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-full">
           <mat-label>Titre *</mat-label>
           <input matInput formControlName="titre" placeholder="Titre de l'événement">
+          <mat-error *ngIf="titre?.invalid && titre?.touched">
+            Le titre est obligatoire
+          </mat-error>
         </mat-form-field>
       </div>
 
+      <!-- Dates -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>Date de début *</mat-label>
@@ -15,6 +20,9 @@
                  formControlName="date_deb" 
                  type="date"
                  placeholder="Date de début">
+          <mat-error *ngIf="date_deb?.invalid && date_deb?.touched">
+            La date de début est obligatoire
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field-half">
@@ -26,11 +34,18 @@
         </mat-form-field>
       </div>
 
-      <mat-form-field appearance="outline" class="form-field-full">
-        <mat-label>Lieu *</mat-label>
-        <input matInput formControlName="lieu" placeholder="Lieu de l'événement">
-      </mat-form-field>
+      <!-- Lieu -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Lieu *</mat-label>
+          <input matInput formControlName="lieu" placeholder="Lieu de l'événement">
+          <mat-error *ngIf="lieu?.invalid && lieu?.touched">
+            Le lieu est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
 
+      <!-- Description -->
       <mat-form-field appearance="outline" class="form-field-full">
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description" 
@@ -39,22 +54,38 @@
         </textarea>
       </mat-form-field>
 
+      <!-- URLs -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>URL d'inscription</mat-label>
-          <input matInput formControlName="registrationUrl" placeholder="Lien d'inscription (optionnel)">
+          <input matInput formControlName="registrationUrl" 
+                 placeholder="https://..." 
+                 type="url">
+          <mat-hint>Lien pour s'inscrire à l'événement</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>URL de réunion</mat-label>
-          <input matInput formControlName="meetingUrl" placeholder="Lien de réunion (optionnel)">
+          <input matInput formControlName="meetingUrl" 
+                 placeholder="https://..." 
+                 type="url">
+          <mat-hint>Lien pour rejoindre la réunion en ligne</mat-hint>
         </mat-form-field>
       </div>
 
+      <!-- Capacité et Statut -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field-half">
           <mat-label>Capacité</mat-label>
-          <input matInput formControlName="capacite" type="number" placeholder="Nombre de participants">
+          <input matInput 
+                 formControlName="capacite" 
+                 type="number" 
+                 placeholder="Nombre de participants"
+                 min="1">
+          <mat-error *ngIf="capacite?.invalid && capacite?.touched">
+            La capacité doit être supérieure à 0
+          </mat-error>
+          <mat-hint>Nombre maximum de participants</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field-half">
@@ -68,13 +99,14 @@
         </mat-form-field>
       </div>
 
+      <!-- Actions -->
       <div class="form-actions">
         <button mat-button 
                 color="primary" 
                 type="submit" 
                 [disabled]="!form.valid">
           <mat-icon>save</mat-icon>
-          {{ data.id ? 'Mettre à jour' : 'Créer' }} l'événement
+          {{ isEditMode ? 'Mettre à jour' : 'Créer' }} l'événement
         </button>
         <button mat-button 
                 color="accent" 
@@ -87,3 +119,7 @@
     </form>
   </div>
 </mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Fermer</button>
+</mat-dialog-actions>

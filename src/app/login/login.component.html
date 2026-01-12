@@ -49,14 +49,14 @@
       <mat-error *ngIf="form.get('fullName')?.hasError('required')">Full name is required</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field">
+    <!--mat-form-field appearance="outline" class="form-field">
       <mat-label>Account Type</mat-label>
       <mat-select formControlName="type">
         <mat-option value="visitor">Visitor</mat-option>
         <mat-option value="student">Student</mat-option>
         <mat-option value="teacher">Teacher</mat-option>
       </mat-select>
-    </mat-form-field>
+    </mat-form-field!!-->
 
     <mat-checkbox formControlName="remember" *ngIf="isLogin">Remember me</mat-checkbox>
 

@@ -1,0 +1,69 @@
+<p>{{ form.get('id')?.value ? 'Edit Tool' : 'Create New Tool' }}</p>
+<form [formGroup]="form" (ngSubmit)="sub()">
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Title *</mat-label>
+        <input matInput placeholder="Tool name" formControlName="titre" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Description *</mat-label>
+        <textarea matInput placeholder="Tool description" formControlName="description" rows="3" required></textarea>
+    </mat-form-field>
+      <mat-form-field appearance="fill" style="width:100%">
+        <mat-label> Source</mat-label>
+        <input matInput type="url" placeholder="https://github.com/user/repo" formControlName="github">
+    </mat-form-field>
+<!--
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>GitHub URL</mat-label>
+        <input matInput type="url" placeholder="https://github.com/user/repo" formControlName="github">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Demo URL</mat-label>
+        <input matInput type="url" placeholder="https://demo.example.com" formControlName="demoUrl">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Language</mat-label>
+        <input matInput placeholder="JavaScript, Python, Java, etc." formControlName="language">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Version</mat-label>
+        <input matInput placeholder="1.0.0" formControlName="version">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>License</mat-label>
+        <mat-select formControlName="licence">
+            <mat-option value="MIT">MIT</mat-option>
+            <mat-option value="GPL">GPL</mat-option>
+            <mat-option value="Apache">Apache</mat-option>
+            <mat-option value="BSD">BSD</mat-option>
+            <mat-option value="proprietary">Proprietary</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="statut">
+            <mat-option value="active">Active</mat-option>
+            <mat-option value="maintenance">Maintenance</mat-option>
+            <mat-option value="deprecated">Deprecated</mat-option>
+        </mat-select>
+    </mat-form-field>
+-->
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Author IDs (comma separated)</mat-label>
+        <input matInput placeholder="1, 2, 3" formControlName="authorIds">
+        <mat-hint>Enter member IDs to assign this tool to specific members</mat-hint>
+    </mat-form-field>
+
+    <div style="margin-top:12px">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
+        <button mat-button type="button" [routerLink]="['/outils']">Cancel</button>
+    </div>
+
+</form>

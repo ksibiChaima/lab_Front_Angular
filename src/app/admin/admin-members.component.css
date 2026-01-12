@@ -1,5 +1,5 @@
 /* Members - Global Design */
-@import '../../../styles/global-design.css';
+@import '../../styles/global-design.css';
 
 .member-container { 
   max-width: 1400px;

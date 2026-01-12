@@ -2,13 +2,13 @@
 
 export const environment = {
   production: false,
-  // Point to Gateway, NOT directly to microservices
-  gatewayUrl: '',
+  // Point to Gateway port 9000
+  gatewayUrl: 'http://localhost:9000',
 
-  memberServiceUrl: '/MEMBER/membres',
-  eventServiceUrl: '/EVENEMENT/evenements',
-  outilServiceUrl: '/OUTIL/outils',
-  publicationServiceUrl: '/PUBLICATION/publications'
+  memberServiceUrl: 'http://localhost:9000/MEMBER/membres',
+  eventServiceUrl: 'http://localhost:9000/EVENEMENT/evenements',
+  outilServiceUrl: 'http://localhost:9000/OUTIL/outils',
+  publicationServiceUrl: 'http://localhost:9000/PUBLICATION/publications'
 };
 
 export const firebaseConfig = {

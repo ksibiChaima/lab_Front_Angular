@@ -1,0 +1,76 @@
+<p>{{ form.get('id')?.value ? 'Edit Publication' : 'Create New Publication' }}</p>
+<form [formGroup]="form" (ngSubmit)="sub()">
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Title *</mat-label>
+        <input matInput placeholder="Publication title" formControlName="titre" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Description *</mat-label>
+        <textarea matInput placeholder="Brief description" formControlName="description" rows="3" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Type *</mat-label>
+        <mat-select formControlName="type">
+            <mat-option value="article">Article</mat-option>
+            <mat-option value="conference">Conference</mat-option>
+            <mat-option value="journal">Journal</mat-option>
+            <mat-option value="book">Book</mat-option>
+            <mat-option value="thesis">Thesis</mat-option>
+            <mat-option value="report">Report</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Publication Date *</mat-label>
+        <input matInput type="date" formControlName="date" required>
+    </mat-form-field>
+   <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Lien URL</mat-label>
+        <input matInput type="url" placeholder="https://example.com/publication" formControlName="lien">
+    </mat-form-field>
+       <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Source pdf </mat-label>
+        <input matInput type="url" placeholder="https://example.com/publication" formControlName="lien">
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Author IDs (comma separated) *</mat-label>
+        <input matInput placeholder="1, 2, 3" formControlName="authorIds" required>
+        <mat-hint>Enter member IDs to assign this publication to specific members</mat-hint>
+    </mat-form-field>
+
+<!--
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Category</mat-label>
+        <input matInput placeholder="Publication category" formControlName="categorie">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Journal</mat-label>
+        <input matInput placeholder="Journal name" formControlName="journal">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>DOI</mat-label>
+        <input matInput placeholder="Digital Object Identifier" formControlName="doi">
+    </mat-form-field>
+
+ 
+
+    <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="statut">
+            <mat-option value="published">Published</mat-option>
+            <mat-option value="in-review">In Review</mat-option>
+            <mat-option value="draft">Draft</mat-option>
+        </mat-select>
+    </mat-form-field>
+-->
+    <div style="margin-top:12px">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
+        <button mat-button type="button" [routerLink]="['/PUBLICATION/publications']">Cancel</button>
+    </div>
+
+</form>

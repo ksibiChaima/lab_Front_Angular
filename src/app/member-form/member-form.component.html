@@ -17,32 +17,35 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" style="width:100%">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" placeholder="Password" formControlName="password">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
         <mat-label>Type</mat-label>
         <mat-select formControlName="type">
-            <mat-option value="student">Etudiant</mat-option>
+            <mat-option value="etudiant">Etudiant</mat-option>
             <mat-option value="enseignant">Enseignant</mat-option>
-            <mat-option value="researcher">Researcher</mat-option>
-            <mat-option value="admin">Admin</mat-option>
         </mat-select>
     </mat-form-field>
 
     <!-- Student fields -->
-    <div *ngIf="form.get('type')?.value === 'student'" style="margin-top:12px">
+    <div *ngIf="form.get('type')?.value === 'etudiant'" style="margin-top:12px">
         <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>Niveau</mat-label>
-            <input matInput formControlName="niveau" placeholder="licence/master/phd">
+            <mat-label>Diplome</mat-label>
+            <input matInput formControlName="diplome" placeholder="Ex: Licence, Master, PhD">
         </mat-form-field>
         <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>Encadreur (member id)</mat-label>
-            <input matInput formControlName="encadreurId" placeholder="encadreur id">
+            <mat-label>Date d'inscription</mat-label>
+            <input matInput type="date" formControlName="dateInscription">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Encadreur (ID)</mat-label>
+            <input matInput formControlName="encadreurId" placeholder="ID de l'encadreur">
         </mat-form-field>
         <mat-form-field appearance="fill" style="width:100%">
             <mat-label>Sujet de thèse</mat-label>
             <input matInput formControlName="sujetThese">
-        </mat-form-field>
-        <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>Année d'inscription</mat-label>
-            <input matInput formControlName="anneeInscription" placeholder="YYYY">
         </mat-form-field>
     </div>
 
@@ -51,6 +54,10 @@
         <mat-form-field appearance="fill" style="width:100%">
             <mat-label>Grade</mat-label>
             <input matInput formControlName="grade">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Etablissement</mat-label>
+            <input matInput formControlName="etablissement">
         </mat-form-field>
         <mat-form-field appearance="fill" style="width:100%">
             <mat-label>Departement</mat-label>

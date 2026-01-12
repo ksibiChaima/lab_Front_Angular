@@ -16,6 +16,8 @@ import { AdminMembersComponent } from './admin/admin-members.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { MemberGuard } from '../guards/member.guard';
+import { ToolFormComponent } from './tool/tool-form.component';
+import { PublicationFormComponent } from './publication/publication-form.component';
 
 const routes: Routes = [
   // Public / auth
@@ -51,6 +53,12 @@ const routes: Routes = [
 
   // Admin-only routes
   { path: 'admin/members', pathMatch: 'full', component: AdminMembersComponent, canActivate: [AdminGuard] },
+  
+  // Tool and Publication creation routes
+  { path: 'tool/create', pathMatch: 'full', component: ToolFormComponent, canActivate: [AuthGuard] },
+  { path: 'tool/edit/:id', pathMatch: 'full', component: ToolFormComponent, canActivate: [AuthGuard] },
+  { path: 'PUBLICATION/publications/create', pathMatch: 'full', component: PublicationFormComponent, canActivate: [AuthGuard] },
+  { path: 'PUBLICATION/publications/edit/:id', pathMatch: 'full', component: PublicationFormComponent, canActivate: [AuthGuard] },
 
   // Fallback
   { path: '**', component: MemberComponent }

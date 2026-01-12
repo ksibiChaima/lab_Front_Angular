@@ -129,7 +129,6 @@ export class EventComponent implements AfterViewInit
      //   this.dialogRef.close();
     //}
     open(){
-
      
      //permet de lancer la boite EventCreate, on ne chaneg pas le path 
     const dialogRef=this.dialog.open(EvtCreateComponent); // lancer le threadobservable 
@@ -137,11 +136,22 @@ export class EventComponent implements AfterViewInit
      dialogRef.afterClosed().subscribe(
         (data) => {
            if(data){
-          this.Es.addEvent(data).subscribe(()=>{
-this.Es.getAllEvents().subscribe((x)=>{
-  this.dataSource.data=x;
-})
-          })
+          console.log('Event data from dialog:', data);
+          this.Es.addEvent(data).subscribe({
+            next: () => {
+              console.log('Event created successfully!');
+              // Recharger tous les événements
+              this.Es.getAllEvents().subscribe((x)=>{
+                this.dataSource.data = x;
+                // Recharger aussi les organisateurs pour le nouvel événement
+                this.loadMembersAndAssociateEvents();
+              });
+            },
+            error: (err) => {
+              console.error('Error creating event:', err);
+              alert('Erreur lors de la création de l\'événement: ' + err.message);
+            }
+          });
         }
     });    
     }
@@ -153,21 +163,43 @@ this.Es.getAllEvents().subscribe((x)=>{
 
        dialogRef.afterClosed().subscribe(
         (data) => {
-          this.Es.updateEvent(data,id).subscribe(()=>{
+           if(data){
+          console.log('Event data from edit dialog:', data);
+          this.Es.updateEvent(data, id).subscribe({
+            next: () => {
+              console.log('Event updated successfully!');
+              // Recharger tous les événements
               this.Es.getAllEvents().subscribe((x)=>{
-              this.dataSource.data=x;
-            })
-          })
-        })
-
+                this.dataSource.data = x;
+                // Recharger aussi les organisateurs
+                this.loadMembersAndAssociateEvents();
+              });
+            },
+            error: (err) => {
+              console.error('Error updating event:', err);
+              alert('Erreur lors de la mise à jour de l\'événement: ' + err.message);
+            }
+          });
+        }
+    });    
     }
 
     delete(id: string) {
       if (confirm('Are you sure you want to delete this event?')) {
-        this.Es.deleteEvent(id).subscribe(() => {
-          this.Es.getAllEvents().subscribe((x) => {
-            this.dataSource.data = x;
-          });
+        this.Es.deleteEvent(id).subscribe({
+          next: () => {
+            console.log('Event deleted successfully!');
+            // Recharger tous les événements
+            this.Es.getAllEvents().subscribe((x) => {
+              this.dataSource.data = x;
+              // Recharger aussi les organisateurs
+              this.loadMembersAndAssociateEvents();
+            });
+          },
+          error: (err) => {
+            console.error('Error deleting event:', err);
+            alert('Erreur lors de la suppression de l\'événement: ' + err.message);
+          }
         });
       }
     }

@@ -15,6 +15,8 @@ export class EvtService {
   }
 
   addEvent(e: Evenement): Observable<Evenement> {
+    console.log('Adding event to:', `${environment.eventServiceUrl}`);
+    console.log('Event data:', e);
     return this.httpClient.post<Evenement>(`${environment.eventServiceUrl}`, e);
   }
 

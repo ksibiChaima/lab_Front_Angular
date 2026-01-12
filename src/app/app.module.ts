@@ -48,6 +48,8 @@ import { UserContextService } from './user-context.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ToolFormComponent } from './tool/tool-form.component';
+import { PublicationFormComponent } from './publication/publication-form.component';
 
 
 
@@ -74,6 +76,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     MemberProfileComponent,
     AdminMembersComponent,
     NavbarComponent,
+    ToolFormComponent,
+    PublicationFormComponent,
   ],
   imports: [
     BrowserModule,

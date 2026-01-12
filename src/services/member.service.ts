@@ -24,9 +24,16 @@ addMember(f:Member):Observable<void>
 { // on met le meme type void car j'attends pas la reception des donnees
   //f est l'emlment a insere au niveau de la base
 
-  const payload = this.normalizeOutboundMember(f as any);
-  const kind = this.getBackendKind(payload);
+  // DETERMINE TYPE FIRST before normalizing
+  const kind = this.getBackendKind(f as any);
+  console.log('Adding member with kind:', kind);
+  
+  const payload = this.normalizeOutboundMember(f as any, kind);
   const url = kind ? `${environment.memberServiceUrl}/${kind}` : `${environment.memberServiceUrl}`;
+  
+  console.log('Final URL:', url);
+  console.log('Final payload:', payload);
+  
   return this.httpClient.post<void>(url, payload)
 }
 deleteMemberById(id:string): Observable<void>{
@@ -72,17 +79,26 @@ getMemberByID(id: string ):Observable<Member>
 
   private getBackendKind(payload: any): 'etudiant' | 'enseignant' | null {
     const t = (payload?.type ?? '').toString().toLowerCase();
-    if (t.includes('ens') || t.includes('teacher') || t.includes('enseignant')) return 'enseignant';
-    if (t.includes('stud') || t.includes('etudiant') || t.includes('student')) return 'etudiant';
+    console.log('Determining backend kind for type:', t);
+    
+    if (t === 'student' || t === 'etudiant' || t.includes('stud')) return 'etudiant';
+    if (t === 'enseignant' || t === 'teacher' || t.includes('ens') || t.includes('teacher')) return 'enseignant';
+    
     // fallback based on known backend fields
     if (payload?.grade) return 'enseignant';
     if (payload?.diplome || payload?.diploma) return 'etudiant';
+    
+    console.log('Could not determine backend kind, fallback to null');
     return null;
   }
 
-  private normalizeOutboundMember(payload: any): any {
+  private normalizeOutboundMember(payload: any, kind?: 'etudiant' | 'enseignant' | null): any {
     if (!payload) return payload;
     const out: any = { ...payload };
+
+    // Use kind parameter if provided, otherwise determine it
+    const finalKind = kind || this.getBackendKind(out);
+    console.log('Backend kind determined:', finalKind, 'from payload type:', out.type);
 
     // legacy UI field: name => backend expects prenom/nom
     if (out.name && (!out.prenom && !out.nom)) {
@@ -92,6 +108,8 @@ getMemberByID(id: string ):Observable<Member>
         out.nom = parts.slice(1).join(' ') || parts[0];
       }
     }
+    // Remove name field as it's not needed in backend
+    delete out.name;
 
     // legacy UI field: createDate => backend uses dateInscription
     if (out.createDate && !out.dateInscription) out.dateInscription = out.createDate;
@@ -100,7 +118,7 @@ getMemberByID(id: string ):Observable<Member>
     if (out.diploma && !out.diplome) out.diplome = out.diploma;
     if (out.diplome && !out.diploma) out.diploma = out.diplome;
 
-    // Map form fields to backend fields
+    // Map form fields to backend fields BEFORE removing form fields
     if (out.sujetThese && !out.sujet) out.sujet = out.sujetThese;
     if (out.encadreurId && !out.encadrant) {
       out.encadrant = { id: out.encadreurId };
@@ -119,8 +137,7 @@ getMemberByID(id: string ):Observable<Member>
     delete out.specialites;
 
     // Clean up payload for specific backend entity types
-    const kind = this.getBackendKind(out);
-    if (kind === 'etudiant') {
+    if (finalKind === 'etudiant') {
       // For Etudiant entity, only send fields that exist in Etudiant class
       const studentPayload: any = {};
       // Basic Membre fields
@@ -138,7 +155,7 @@ getMemberByID(id: string ):Observable<Member>
       if (out.dateInscription) studentPayload.dateInscription = out.dateInscription;
       if (out.encadrant) studentPayload.encadrant = out.encadrant;
       return studentPayload;
-    } else if (kind === 'enseignant') {
+    } else if (finalKind === 'enseignant') {
       // For EnseignantChercheur entity, only send fields that exist in EnseignantChercheur class
       const teacherPayload: any = {};
       // Basic Membre fields
