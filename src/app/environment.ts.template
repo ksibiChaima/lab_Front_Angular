@@ -1,0 +1,20 @@
+export const environment = {
+  production: false,
+  // Point to Gateway port 9000
+  gatewayUrl: 'http://localhost:9000',
+
+  memberServiceUrl: 'http://localhost:9000/MEMBER/membres',
+  eventServiceUrl: 'http://localhost:9000/EVENEMENT/evenements',
+  outilServiceUrl: 'http://localhost:9000/OUTIL/outils',
+  publicationServiceUrl: 'http://localhost:9000/PUBLICATION/publications'
+};
+
+export const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
+};

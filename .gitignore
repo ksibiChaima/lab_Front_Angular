@@ -43,4 +43,21 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/   
-!src/app/environment.ts
+
+# Security - Firebase and API keys
+src/app/environment.ts
+*.firebase.json
+firebase-*.json
+google-services.json
+GoogleService-Info.plist
+*.p8
+*.p12
+*.key
+*.pem
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
