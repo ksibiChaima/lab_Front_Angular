@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subscriptions.push(this.es.GetAllEvt().subscribe(e => {
+    this.subscriptions.push(this.es.getAllEvents().subscribe(e => {
       this.eventsCount = e.length;
       this.updateEventChart(e);
     }));
@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changeTimeframe(tf: '6m' | '12m') {
     this.timeframe = tf;
     // re-fetch events to rebuild chart — EvtService already sends full list so subscription will call updateEventChart
-    this.es.GetAllEvt().subscribe(e => this.updateEventChart(e));
+    this.es.getAllEvents().subscribe((e) => this.updateEventChart(e));
   }
 
   private getLastMonths(n: number) {

@@ -25,17 +25,33 @@ export class PublicationDetailComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) { this.router.navigate(['/publications']); return; }
+    
     this.loading = true;
-    this.pubService.getById(id).subscribe((p) => {
-      this.pub = p;
-      if (p?.authorIds?.length) {
-        // resolve Observables to promises with lastValueFrom
-        Promise.all(p.authorIds.map(aid => lastValueFrom(this.memberService.getMemberByID(aid))))
-          .then(res => this.authors = res)
-          .finally(() => (this.loading = false));
-      } else {
-        this.loading = false;
-      }
-    }, () => (this.loading = false));
+    this.pubService.getById(id).subscribe({
+      next: async (p: Publication) => {
+        this.pub = p;
+
+        const ids = (p.authorIds || []).map(String).filter(Boolean);
+        if (!ids.length) {
+          this.authors = [];
+          this.loading = false;
+          return;
+        }
+
+        try {
+          const members = await Promise.all(
+            ids.map((authorId: string) => lastValueFrom(this.memberService.getMemberByID(authorId)))
+          );
+          this.authors = members.map((m: any, idx: number) => ({
+            id: ids[idx],
+            name: (m?.name || `${m?.firstName || ''} ${m?.lastName || ''}`.trim()),
+            email: m?.email
+          }));
+        } finally {
+          this.loading = false;
+        }
+      },
+      error: () => (this.loading = false)
+    });
   }
 }

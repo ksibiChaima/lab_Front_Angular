@@ -13,41 +13,44 @@ import { OutilListComponent } from './outil/outil-list.component';
 import { OutilDetailComponent } from './outil/outil-detail.component';
 import { MemberProfileComponent } from './member-profile/member-profile.component';
 import { AdminMembersComponent } from './admin/admin-members.component';
+import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
+import { MemberGuard } from '../guards/member.guard';
 
 const routes: Routes = [
   // Public / auth
   { path: '', pathMatch: 'full', component: LoginComponent },
 
-  // Dashboard
-  { path: 'dashboard', pathMatch: 'full', component: DashboardComponent },
+  // Dashboard (authenticated users)
+  { path: 'dashboard', pathMatch: 'full', component: DashboardComponent, canActivate: [AuthGuard] },
 
-  // Members
+  // Members (public view)
   { path: 'member', pathMatch: 'full', component: MemberComponent },
-  { path: 'create', pathMatch: 'full', component: MemberFormComponent },
-  { path: 'member/create', pathMatch: 'full', component: MemberFormComponent },
-  // member edit (scoped under member to avoid collisions)
-  { path: 'member/:id/edit', pathMatch: 'full', component: MemberFormComponent },
   { path: 'member/:id', pathMatch: 'full', component: MemberProfileComponent },
 
-  // Events
-  { path: 'events', pathMatch: 'full', component: EventComponent },
-
-  // Publications
+  // Publications (public view)
   { path: 'publications', pathMatch: 'full', component: PublicationListComponent },
   { path: 'publications/:id', pathMatch: 'full', component: PublicationDetailComponent },
 
-  // Outils (tools)
+  // Events (public view)
+  { path: 'events', pathMatch: 'full', component: EventComponent },
+
+  // Outils (public view)
   { path: 'outils', pathMatch: 'full', component: OutilListComponent },
   { path: 'outils/:id', pathMatch: 'full', component: OutilDetailComponent },
-  // legacy /tools route -> redirect to /outils
   { path: 'tools', pathMatch: 'full', redirectTo: 'outils' },
 
   // Articles (legacy placeholder)
   { path: 'articles', pathMatch: 'full', component: ArticleComponent },
 
-  // Profile and admin
-  { path: 'profile', pathMatch: 'full', component: MemberProfileComponent },
-  { path: 'admin/members', pathMatch: 'full', component: AdminMembersComponent },
+  // Member-only routes
+  { path: 'create', pathMatch: 'full', component: MemberFormComponent, canActivate: [AuthGuard] },
+  { path: 'member/create', pathMatch: 'full', component: MemberFormComponent, canActivate: [AuthGuard] },
+  { path: 'member/:id/edit', pathMatch: 'full', component: MemberFormComponent, canActivate: [AuthGuard] },
+  { path: 'profile', pathMatch: 'full', component: MemberProfileComponent, canActivate: [MemberGuard] },
+
+  // Admin-only routes
+  { path: 'admin/members', pathMatch: 'full', component: AdminMembersComponent, canActivate: [AdminGuard] },
 
   // Fallback
   { path: '**', component: MemberComponent }

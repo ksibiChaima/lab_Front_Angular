@@ -29,12 +29,15 @@ export class PublicationListComponent implements OnInit {
     this.loading = true;
     this.pubService.getAll().subscribe((res) => {
       this.publications = res || [];
-      // if user is not admin and we have a mapped member id, show only their publications
       const cur = this.uc.getCurrent();
-      if (cur && !this.uc.isAdmin() && cur.id) {
-        const uid = cur.id.toString();
+      
+      // Si l'utilisateur est admin, il voit toutes les publications
+      // Sinon, il ne voit que ses propres publications
+      if (cur && !this.uc.isAdmin() && cur.id != null) {
+        const uid = String(cur.id);
         this.publications = this.publications.filter(p => (p.authorIds || []).map(String).includes(uid));
       }
+      
       this.dataSource.data = this.publications;
       this.availableTypes = Array.from(new Set((this.publications || []).map(p => (p.type || '').toString()).filter(Boolean))).sort();
       this.availableYears = Array.from(new Set((this.publications || []).map(p => this.extractYear(p.date)).filter(Boolean))).sort().reverse();
@@ -74,9 +77,9 @@ export class PublicationListComponent implements OnInit {
     });
   }
 
-  private extractYear(d?: string): string {
+  private extractYear(d?: string | Date): string {
     if (!d) return '';
-    const dt = new Date(d);
+    const dt = (d instanceof Date) ? d : new Date(d);
     if (!isNaN(dt.getTime())) return String(dt.getFullYear());
     const m = String(d).match(/(19|20)\d{2}/);
     return m ? m[0] : '';

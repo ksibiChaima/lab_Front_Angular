@@ -1,8 +1,20 @@
 export interface Evenement {
-  id: string;
+  id?: string | number;
   titre?: string;
-  date?: string; // single-date events
-  date_deb?: string;
-  date_fin?: string;
+  description?: string;
+  date?: string | Date;
   lieu?: string;
+  type?: string; // Conference, Workshop, Séminaire, etc.
+  dateFin?: string | Date;
+  registrationUrl?: string;
+  meetingUrl?: string;
+  capacite?: number;
+  statut?: string;
+ 
+  organisateur?: {
+    id?: string | number;
+    nom?: string;
+    prenom?: string;
+    email?: string;
+  };
 }

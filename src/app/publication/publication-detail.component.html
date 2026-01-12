@@ -5,8 +5,8 @@
       <mat-card-subtitle>{{ pub.type }} — {{ pub.date | date }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p *ngIf="pub.sourcepdf">PDF: <a [href]="pub.sourcepdf" target="_blank">Télécharger</a></p>
-      <p *ngIf="pub.lien">Lien: <a [href]="pub.lien" target="_blank">ouvrir</a></p>
+      <p *ngIf="pub.sourcePdf">PDF: <a [href]="pub.sourcePdf" target="_blank">Télécharger</a></p>
+      <p *ngIf="pub.lien">Lien: <a [href]="pub.lien" target="_blank">Ouvrir</a></p>
       <div *ngIf="authors.length">
         <h4>Auteurs</h4>
         <mat-list>

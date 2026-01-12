@@ -34,14 +34,12 @@ export class EventComponent implements AfterViewInit
   }
 
   ngAfterViewInit() {
-
-
-   // remplir le tableau datasource 
-   this.Es.GetAllEvt().subscribe((res)=>{
-    this.dataSource.data=res
-   })
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // remplir le tableau datasource 
+    this.Es.getAllEvents().subscribe((res) => {
+      this.dataSource.data = res;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
 
   applyFilter(event: Event) {
@@ -66,7 +64,7 @@ export class EventComponent implements AfterViewInit
         (data) => {
            if(data){
           this.Es.addEvent(data).subscribe(()=>{
-this.Es.GetAllEvt().subscribe((x)=>{
+this.Es.getAllEvents().subscribe((x)=>{
   this.dataSource.data=x;
 })
           })
@@ -81,8 +79,8 @@ this.Es.GetAllEvt().subscribe((x)=>{
 
        dialogRef.afterClosed().subscribe(
         (data) => {
-          this.Es.updateEvt(data,id).subscribe(()=>{
-              this.Es.GetAllEvt().subscribe((x)=>{
+          this.Es.updateEvent(data,id).subscribe(()=>{
+              this.Es.getAllEvents().subscribe((x)=>{
               this.dataSource.data=x;
             })
           })

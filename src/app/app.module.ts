@@ -35,6 +35,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { firebaseConfig } from './environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { LoginComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,6 +46,8 @@ import { MemberProfileComponent } from './member-profile/member-profile.componen
 import { AdminMembersComponent } from './admin/admin-members.component';
 import { UserContextService } from './user-context.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 
@@ -70,6 +73,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     OutilDetailComponent,
     MemberProfileComponent,
     AdminMembersComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,10 +100,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   MatProgressSpinnerModule,
   MatCheckboxModule,
   MatSelectModule,
+  MatChipsModule,
   
  // Firebase modules
   AngularFireModule.initializeApp(firebaseConfig),
   AngularFireAuthModule,
+  AngularFireDatabaseModule,
 
 
 

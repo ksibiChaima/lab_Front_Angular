@@ -56,7 +56,12 @@ getMemberByID(id: string ):Observable<Member>
       return m;
     }));
   }
-updateMember(id:string ,f:Member) :Observable<void>
+// Récupérer les étudiants encadrés par un enseignant
+  getSupervisedStudents(teacherId: string): Observable<Member[]> {
+    return this.httpClient.get<Member[]>(`${environment.memberServiceUrl}/${teacherId}/supervised-students`);
+  }
+
+  updateMember(id:string ,f:Member) :Observable<void>
 {
   const payload = this.normalizeOutboundMember(f as any);
   const kind = this.getBackendKind(payload);

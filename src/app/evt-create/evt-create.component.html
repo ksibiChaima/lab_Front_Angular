@@ -26,7 +26,108 @@
   <mat-form-field>
     <input matInput placeholder="lieu" formControlName="lieu">
   </mat-form-field>
-   
+
+  <div class="event-form-container">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <mat-form-field appearance="outline">
+        <mat-label>Type d'événement</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="Conference">Conférence</mat-option>
+          <mat-option value="Workshop">Workshop</mat-option>
+          <mat-option value="Séminaire">Séminaire</mat-option>
+          <mat-option value="Formation">Formation</mat-option>
+          <mat-option value="Réunion">Réunion</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Titre *</mat-label>
+        <input matInput formControlName="titre" placeholder="Titre de l'événement">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" 
+                  placeholder="Description détaillée de l'événement" 
+                  rows="3">
+        </textarea>
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Date de début *</mat-label>
+          <input matInput 
+                 formControlName="date_deb" 
+                 type="date"
+                 placeholder="Date de début">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>Date de fin</mat-label>
+          <input matInput 
+                 formControlName="date_fin" 
+                 type="date"
+                 placeholder="Date de fin (optionnel)">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Lieu *</mat-label>
+        <input matInput formControlName="lieu" placeholder="Lieu de l'événement">
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>URL d'inscription</mat-label>
+          <input matInput 
+                 formControlName="registrationUrl" 
+                 placeholder="Lien vers le formulaire d'inscription">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field-half">
+          <mat-label>URL de réunion</mat-label>
+          <input matInput 
+                 formControlName="meetingUrl" 
+                 placeholder="Lien Zoom/Teams (optionnel)">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Capacité</mat-label>
+        <input matInput 
+               type="number" 
+               formControlName="capacite" 
+               placeholder="Nombre de participants maximum">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Statut</mat-label>
+        <mat-select formControlName="statut">
+          <mat-option value="Prévu">Prévu</mat-option>
+          <mat-option value="En cours">En cours</mat-option>
+          <mat-option value="Terminé">Terminé</mat-option>
+          <mat-option value="Annulé">Annulé</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-button 
+                color="primary" 
+                type="submit" 
+                [disabled]="!form.valid">
+          <mat-icon>save</mat-icon>
+          {{ data.id ? 'Mettre à jour' : 'Créer' }} l'événement
+        </button>
+        <button mat-button 
+                color="accent" 
+                type="button"
+                (click)="close()">
+          <mat-icon>close</mat-icon>
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

@@ -32,6 +32,6 @@ export class OutilListComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.filtered = this.dataSource.data.filter(o => (o.id || '').toLowerCase().includes(filterValue) || (o.source || '').toLowerCase().includes(filterValue));
+    this.filtered = this.dataSource.data.filter(o => String(o.id ?? '').toLowerCase().includes(filterValue) || String(o.source ?? '').toLowerCase().includes(filterValue));
   }
 }
